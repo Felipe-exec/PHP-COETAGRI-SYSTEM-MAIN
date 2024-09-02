@@ -24,7 +24,7 @@ unset ($_SESSION['senha']);
                         <h6 class="m-0 font-weight-bold text-primary" id="title">GERENCIAR INFORMAÇÕES DOS ADMINISTRADORES</h6>
                     </div>
                     <div class="col-md-4 card_button_title">
-                        <a title="Adicionar novo administrador" href="cad_admin.php"><button type="button" class="btn btn-primary btn-sm card_button_title" data-toggle="modal" id=" "> <i class="fa fa-user-circle">&nbsp;</i> Adicionar Administrador</button></a>
+                        <a title="Adicionar novo administrador" href="cad_admin.php"><button type="button" class="btn btn-primary btn-sm card_button_title" data-toggle="modal"> <i class="fa fa-user-circle">&nbsp;</i> Adicionar Administrador</button></a>
 
                     </div>
                 </div>
@@ -109,8 +109,6 @@ unset ($_SESSION['senha']);
                                      </div>
                                  </div>
                              </div>
-
-
                             <?php endforeach ?>   
                         </tbody>
                     </table>

@@ -4,11 +4,15 @@ require_once('header.php');
 require_once('sidebar.php');
 require_once("bd/conecta_bd.php"); // Conexão com o banco de dados
 require_once("bd/bd_produto.php"); // Arquivo contendo as funções para produtos
+require_once("bd/bd_funcionario.php"); // Arquivo contendo as funções para funcionários
 
 // Obtém a quantidade de produtos
 $quantidadeProdutos = contarProdutos();
 
-// Verifica se há um termo de pesquisa
+// Obtém a quantidade de funcionarios
+$quantidadeFuncionarios = contarFuncionarios();
+
+// Verifica se há um termo de pesquisa para produtos
 $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
 ?>
 
@@ -24,62 +28,80 @@ $searchTerm = isset($_GET['search']) ? $_GET['search'] : '';
         <!-- Content Row -->
         <div class="row">
 
-            <!-- Produtos Cadastrados -->
-            <div class="col-xl-12 col-md-12 mb-4" id="cards-notice">
-                <div class="card border-left-danger shadow h-100 py-2">
-                    <div class="card-body">
-                        <div class="row no-gutters align-items-center">
-                            <div class="col mr-2">
-                                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
-                                    Produtos Cadastrados -> <?= $quantidadeProdutos ?>
-                                </div>
-                                <div class="h5 mb-0 font-weight-bold text-gray-800">
-                                    <!-- Formulário de Pesquisa -->
-                                    <form method="get" action="">
-                                        <div class="input-group mb-3">
-                                            <input type="text" class="form-control" name="search" value="<?= htmlspecialchars($searchTerm) ?>" placeholder="Pesquisar produtos...">
-                                            <div class="input-group-append">
-                                                <button class="btn btn-primary" type="submit">Pesquisar</button>
-                                                <?php if (!empty($searchTerm)) : ?>
-                                                    <a class="btn btn-secondary ml-2" href="home.php">Resetar</a>
-                                                <?php endif; ?>
-                                            </div>
-                                        </div>
-                                    </form>
+        <!-- Produtos Cadastrados -->
+        <div class="col-xl-6 col-lg-6 col-md-12 mb-4 space-between-cards">
+            <div class="card border-left-danger shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                                Produtos Cadastrados -> <?= $quantidadeProdutos ?>
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                <div id="product-list-container">
+                                    <?php
+                                    $produtos = listaProdutos();
+                                    if (!empty($searchTerm)) {
+                                        $produtos = array_filter($produtos, function($produto) use ($searchTerm) {
+                                            return stripos($produto['nome'], $searchTerm) !== false;
+                                        });
+                                    }
 
-                                    <div id="product-list-container">
-                                        <?php
-                                        // Listando os produtos com base no termo de pesquisa
-                                        $produtos = listaProdutos(); // Obtém todos os produtos
-                                        if (!empty($searchTerm)) {
-                                            // Filtra os produtos com base no termo de pesquisa
-                                            $produtos = array_filter($produtos, function($produto) use ($searchTerm) {
-                                                return stripos($produto['nome'], $searchTerm) !== false;
-                                            });
+                                    if (count($produtos) > 0) {
+                                        echo "<ul id='product-list'>";
+                                        foreach ($produtos as $produto) {
+                                            echo "<li>" . $produto['nome'] . " - R$ " . number_format($produto['valor'], 2, ',', '.') . "</li>";
                                         }
-
-                                        if (count($produtos) > 0) {
-                                            echo "<ul id='product-list'>";
-                                            foreach ($produtos as $produto) {
-                                                echo "<li>" . $produto['nome'] . " - R$ " . number_format($produto['valor'], 2, ',', '.') . "</li>";
-                                            }
-                                            echo "</ul>";
-                                        } else {
-                                            echo "Nenhum produto encontrado.";
-                                        }
-                                        ?>
-                                    </div>
+                                        echo "</ul>";
+                                    } else {
+                                        echo "Nenhum produto encontrado.";
+                                    }
+                                    ?>
                                 </div>
                             </div>
-                            <div class="col-auto">
-                                <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
-                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
                         </div>
                     </div>
                 </div>
             </div>
-
         </div>
+
+        <!-- Funcionários Cadastrados -->
+        <div class="col-xl-6 col-lg-6 col-md-12 mb-4 space-between-cards">
+            <div class="card border-left-primary shadow h-100 py-2" id="employee-list">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Funcionários Cadastrados -> <?= $quantidadeFuncionarios ?>
+                            </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">
+                                <div id="employee-list-container">
+                                    <?php
+                                    $funcionarios = listaFuncionarios();
+                                    if (count($funcionarios) > 0) {
+                                        echo "<ul id='employee-list'>";
+                                        foreach ($funcionarios as $funcionario) {
+                                            echo "<li>" . $funcionario['nome'] . " - " . $funcionario['email'] . "</li>";
+                                        }
+                                        echo "</ul>";
+                                    } else {
+                                        echo "Nenhum funcionário cadastrado.";
+                                    }
+                                    ?>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-user-tie fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
     <!-- /.container-fluid -->
 

@@ -74,6 +74,15 @@ function buscaFuncionarioEditar($codigo){
     return $dados;
 }
 
+function contarFuncionarios() {
+    $conexao = conecta_bd();
+    $query = "SELECT COUNT(*) AS quantidade FROM funcionario";
+    $resultado = mysqli_query($conexao, $query);
+    $dados = mysqli_fetch_assoc($resultado);
+    mysqli_close($conexao);
+    return $dados['quantidade'];
+}
+
 function editarFuncionario($codigo, $status, $data){
     $conexao = conecta_bd();
     $query = "select *

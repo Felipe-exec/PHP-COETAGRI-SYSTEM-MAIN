@@ -23,3 +23,21 @@
 #product-list li:last-child {
     border-bottom: none;
 }
+
+#employee-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+#employee-list li {
+    padding: 8px 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.space-between-cards {
+    padding: 70px; /* Ajuste esse valor conforme necessário */
+}
+/*
+#card-funcionario {
+    max-height: 30%;
+}

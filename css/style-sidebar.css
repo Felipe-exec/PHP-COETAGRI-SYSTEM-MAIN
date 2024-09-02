@@ -43,7 +43,7 @@ footer {
     left: 0;
     right: 0;
     text-align: center;
-    z-index: 999;
+    z-index: 0;
 }
 
 footer p {
