@@ -33,11 +33,11 @@ function listaFuncionarios(){
 function buscaFuncionario($email) {
     $conexao = conecta_bd();
     $query = "select * from funcionario where email='$email'";
-    return mysqli_query($conexao, $query);
-    //$resultado = mysqli_query($conexao, $query);
-    //$dados = mysqli_num_rows($resultado);
+    //return mysqli_query($conexao, $query);
+    $resultado = mysqli_query($conexao, $query);
+    $dados = mysqli_num_rows($resultado);
 
-    //return $dados;
+    return $dados;
 }
 
 function cadastraFuncionario($nome, $email, $senha, $cep, $endereco, $numero, $bairro, $cidade, $uf, $telefone, $status, $perfil, $data){

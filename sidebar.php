@@ -64,7 +64,7 @@
 
         <?php
     } elseif ($_SESSION['perfil'] == 2) {
-        // Perfil 2: Cliente
+        // Perfil 2: Funcionario
         ?>
         <!-- Divider -->
         <hr class="sidebar-divider my-0">
@@ -82,14 +82,6 @@
 
     <!-- Divider -->
     <hr class="sidebar-divider my-0">
-
-    <!-- Nav Item - Contato -->
-    <li class="nav-item active">
-        <a class="nav-link" href="contato.php">
-            <i class="fa fa-envelope"></i>
-            <span>Contato</span>
-        </a>
-    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">
