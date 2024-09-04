@@ -48,29 +48,36 @@ require_once('sidebar.php');
                 endif;
                 ?>
 
-                <form class="user" action="cad_produto_envia.php" method="post">
-                    <div class="form-group row">
-                        <div class="col-sm-6 mb-3 mb-sm-0">
-                            <label> Nome do Produto </label>
-                            <input type="text" class="form-control form-control-user" id="nome" name="nome" placeholder="Nome do Produto" required>
-                        </div>
-                        <div class="col-sm-6">
-                            <label> Valor </label>
-                            <input type="number" step="0.01" class="form-control form-control-user" id="valor" name="valor" placeholder="Valor" required>
-                        </div>
+            <form class="user" action="cad_produto_envia.php" method="post" enctype="multipart/form-data">
+                <div class="form-group row">
+                    <div class="col-sm-6 mb-3 mb-sm-0">
+                        <label> Nome do Produto </label>
+                        <input type="text" class="form-control form-control-user" id="nome" name="nome" placeholder="Nome do Produto" required>
                     </div>
-                    <div class="form-group">
-                        <label> Descrição </label>
-                        <textarea class="form-control form-control-user" id="descricao" name="descricao" placeholder="Descrição do Produto"></textarea>
+                    <div class="col-sm-6">
+                        <label> Valor </label>
+                        <input type="number" step="0.01" class="form-control form-control-user" id="valor" name="valor" placeholder="Valor" required>
                     </div>
+                </div>
+                <div class="form-group">
+                    <label> Descrição </label>
+                    <textarea class="form-control form-control-user" id="descricao" name="descricao" placeholder="Descrição do Produto"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="imagem" class="form-label">Imagem do Produto</label>
+                    <br>
+                    <input type="file" class="btn btn-primary" id="imagem" name="imagem" accept="image/*" required>
+                    <small class="form-text text-muted">Selecione uma imagem para o produto (formatos permitidos: JPG, PNG).</small>
+                </div>
 
-                    <div class="card-footer text-muted" id="btn-form">
-                        <div class="text-right">
-                            <a title="Voltar" href="produto.php"><button type="button" class="btn btn-success"><i class="fas fa-arrow-circle-left"></i>&nbsp;</i>Voltar</button></a>
-                            <button type="submit" class="btn btn-primary"><i class="fa fa-save">&nbsp;</i>Adicionar Produto</button>
-                        </div>
+                <div class="card-footer text-muted" id="btn-form">
+                    <div class="text-right">
+                        <a title="Voltar" href="produto.php"><button type="button" class="btn btn-success"><i class="fas fa-arrow-circle-left"></i>&nbsp;Voltar</button></a>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save">&nbsp;</i>Adicionar Produto</button>
                     </div>
-                </form>
+                </div>
+            </form>
+
             </div>
         </div>
 

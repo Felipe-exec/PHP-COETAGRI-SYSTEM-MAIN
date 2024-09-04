@@ -12,6 +12,19 @@ $valor = $_POST["valor"];
 $resultado = editarProduto($codigo, $nome, $descricao, $valor);
 
 if ($resultado == 1) {
+    // Verifica se foi enviada uma nova imagem
+    if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
+        // Excluir a imagem anterior
+        array_map('unlink', glob('uploads/' . $codigo . '_*'));
+        
+        // Salvar a nova imagem
+        $imagem = $_FILES['imagem'];
+        $nome_imagem = $codigo . '_' . basename($imagem['name']);
+        $caminho_imagem = 'uploads/' . $nome_imagem;
+
+        move_uploaded_file($imagem['tmp_name'], $caminho_imagem);
+    }
+
     $_SESSION['texto_sucesso'] = 'Os dados do produto foram atualizados com sucesso.';
     header("Location: produto.php");
     exit();
