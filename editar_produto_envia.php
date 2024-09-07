@@ -12,6 +12,10 @@ $valor = $_POST["valor"];
 $resultado = editarProduto($codigo, $nome, $descricao, $valor);
 
 if ($resultado == 1) {
+    // Verifica se a pasta 'uploads' existe, se não, cria
+    if (!is_dir('uploads')) {
+        mkdir('uploads', 0755, true);
+    }
     // Verifica se foi enviada uma nova imagem
     if (isset($_FILES['imagem']) && $_FILES['imagem']['error'] === UPLOAD_ERR_OK) {
         // Excluir a imagem anterior

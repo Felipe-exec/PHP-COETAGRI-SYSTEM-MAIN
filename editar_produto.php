@@ -16,6 +16,9 @@ $valor = $dados["valor"];
 // Caminho da imagem baseado no código do produto
 $caminho_imagem_atual = 'uploads/' . $codigo . '_*';
 $imagens = glob($caminho_imagem_atual);
+
+// Verifica se existe ao menos uma imagem e obtém o primeiro arquivo válido
+$imagem_atual = isset($imagens[0]) ? $imagens[0] : null;
 ?>
 
 <!-- Main Content -->
@@ -49,10 +52,10 @@ $imagens = glob($caminho_imagem_atual);
                     <textarea class="form-control form-control-user" id="descricao" name="descricao" placeholder="Descrição do Produto"><?= $descricao ?></textarea>
                 </div>
 
-                <?php if (!empty($imagens)): ?>
+                <?php if ($imagem_atual): ?>
                     <div class="form-group">
                         <label>Imagem Atual:</label><br>
-                        <img src="<?= $imagens[0] ?>" alt="Imagem do Produto" width="200">
+                        <img src="<?= $imagem_atual ?>" alt="Imagem do Produto" width="200">
                     </div>
                 <?php else: ?>
                     <div class="form-group">
@@ -62,7 +65,7 @@ $imagens = glob($caminho_imagem_atual);
                 <?php endif; ?>
 
                 <div class="form-group">
-                    <label for="imagem" class="form-label">Nova Imagem do Produto (opcional)</label>
+                    <label for="imagem" class="form-label">Quer substituir a imagem do produto?</label>
                     <br>
                     <input type="file" class="btn btn-primary" id="imagem" name="imagem" accept="image/*">
                     <small class="form-text text-muted">Selecione uma nova imagem para substituir (formatos permitidos: JPG, PNG).</small>

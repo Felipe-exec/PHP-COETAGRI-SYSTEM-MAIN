@@ -31,11 +31,19 @@ function cadastraProduto($nome, $descricao, $valor) {
     $query = "INSERT INTO produto (nome, descricao, valor) VALUES ('$nome', '$descricao', '$valor')";
 
     $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_affected_rows($conexao);
+
+    if ($resultado) {
+        // Retorna o ID do produto recém-inserido
+        $codigo = mysqli_insert_id($conexao);
+    } else {
+        // Em caso de falha na inserção, retorna 0 ou um valor indicativo de falha
+        $codigo = 0;
+    }
 
     mysqli_close($conexao);
-    return $dados;
+    return $codigo;
 }
+
 
 function removeProduto($codigo) {
     $conexao = conecta_bd();
