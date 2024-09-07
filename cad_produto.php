@@ -14,11 +14,7 @@ require_once('sidebar.php');
 
         <div class="card shadow mb-2">
             <div class="card-header py-3">
-                <div class="row">
-                    <div class="col-md-8">
-                        <h6 class="m-0 font-weight-bold text-primary" id="title">ADICIONAR PRODUTO</h6>
-                    </div>
-                </div>
+                <h6 class="m-0 font-weight-bold text-primary">ADICIONAR PRODUTO</h6>
             </div>
             <div class="card-body">
                 <?php
@@ -49,7 +45,7 @@ require_once('sidebar.php');
                 ?>
 
                 <!-- Formulário de Cadastro de Produto -->
-                <form class="user" action="cad_produto_envia.php" method="post">
+                <form class="user" action="cad_produto_envia.php" method="post" enctype="multipart/form-data">
                     <div class="form-group row">
                         <div class="col-sm-6 mb-3 mb-sm-0">
                             <label> Nome do Produto </label>
@@ -64,11 +60,17 @@ require_once('sidebar.php');
                         <label> Descrição </label>
                         <textarea class="form-control form-control-user" id="descricao" name="descricao" placeholder="Descrição do Produto"></textarea>
                     </div>
+                    <div class="form-group">
+                        <label for="imagem" class="form-label">Imagem do Produto</label>
+                        <br>
+                        <input type="file" class="btn btn-primary" id="imagem" name="imagem" accept="image/*" required>
+                        <small class="form-text text-muted">Selecione uma imagem para o produto (formatos permitidos: JPG, PNG).</small>
+                    </div>
 
-                    <div class="card-footer text-muted" id="btn-form">
+                    <div class="card-footer text-muted">
                         <div class="text-right">
                             <a title="Voltar" href="produto.php"><button type="button" class="btn btn-success"><i class="fas fa-arrow-circle-left"></i>&nbsp;Voltar</button></a>
-                            <button type="submit" class="btn btn-primary"><i class="fa fa-arrow-right">&nbsp;</i>Próximo</button>
+                            <button type="submit" class="btn btn-primary"><i class="fa fa-save">&nbsp;</i>Finalizar</button>
                         </div>
                     </div>
                 </form>

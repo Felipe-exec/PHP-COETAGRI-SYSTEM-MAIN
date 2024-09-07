@@ -2,35 +2,55 @@
 require_once("valida_session.php");
 require_once("bd/bd_produto.php");
 
-$nome = $_POST["nome"];
-$descricao = $_POST["descricao"];
-$valor = $_POST["valor"];
+// Verifica se o formulário foi enviado
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $nome = $_POST["nome"];
+    $descricao = $_POST["descricao"];
+    $valor = $_POST["valor"];
+    $imagem = $_FILES['imagem'];
 
-// Verifica se o produto já existe
-$dados = buscaProduto($nome);
+    // Verifica se o produto já existe
+    $dados = buscaProduto($nome);
 
-if ($dados) {
-    $_SESSION['texto_erro'] = 'Este produto já está cadastrado no sistema!';
-    $_SESSION['nome'] = $nome;
-    $_SESSION['descricao'] = $descricao;
-    $_SESSION['valor'] = $valor;
-    header("Location: cad_produto.php");
-    exit();
-}
+    if ($dados) {
+        $_SESSION['texto_erro'] = 'Este produto já está cadastrado no sistema!';
+        header("Location: cad_produto.php");
+        exit();
+    } else {
+        // Salva o produto no banco de dados
+        $codigo = cadastraProduto($nome, $descricao, $valor);
 
-// Salva o produto no banco de dados (sem imagem nesta etapa)
-$codigo = cadastraProduto($nome, $descricao, $valor);
+        if ($codigo) {
+            // Verifica se o arquivo de imagem foi enviado
+            if (isset($imagem) && $imagem['error'] === UPLOAD_ERR_OK) {
+                // Nome da imagem com base no código do produto
+                $nome_imagem = $codigo . '_' . basename($imagem['name']);
+                
+                // Verifica se a pasta 'uploads' existe, se não, cria
+                if (!is_dir('uploads')) {
+                    mkdir('uploads', 0755, true);
+                }
 
-if ($codigo) {
-    $_SESSION['texto_sucesso'] = 'Produto adicionado com sucesso. Agora envie a imagem do produto.';
-    // Redireciona para a página de envio de imagem com o código correto
-    header("Location: cad_produto_imagem.php?cod=" . $codigo);
-    exit();
+                $caminho_imagem = 'uploads/' . $nome_imagem;
+
+                // Move a nova imagem para a pasta 'uploads'
+                if (move_uploaded_file($imagem['tmp_name'], $caminho_imagem)) {
+                    $_SESSION['texto_sucesso'] = 'Produto cadastrado com sucesso!';
+                } else {
+                    $_SESSION['texto_erro'] = 'Erro ao enviar a imagem.';
+                }
+            } else {
+                $_SESSION['texto_erro'] = 'Nenhuma imagem foi enviada.';
+            }
+        } else {
+            $_SESSION['texto_erro'] = 'O produto não foi adicionado no sistema!';
+        }
+
+        header("Location: produto.php");
+        exit();
+    }
 } else {
-    $_SESSION['texto_erro'] = 'O produto não foi adicionado no sistema!';
-    $_SESSION['nome'] = $nome;
-    $_SESSION['descricao'] = $descricao;
-    $_SESSION['valor'] = $valor;
+    $_SESSION['texto_erro'] = 'Método de requisição inválido!';
     header("Location: cad_produto.php");
     exit();
 }
