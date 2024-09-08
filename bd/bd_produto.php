@@ -5,7 +5,9 @@ require_once("conecta_bd.php");
 function listaProdutos() {
     $conexao = conecta_bd();
     $produtos = array();
-    $query = "SELECT * FROM produto ORDER BY nome";
+    $query = "SELECT p.*, c.nome AS categoria_nome FROM produto p 
+              LEFT JOIN categoria c ON p.categoria_id = c.cod 
+              ORDER BY p.nome";
    
     $resultado = mysqli_query($conexao, $query);
     while ($dados = mysqli_fetch_array($resultado)) {
@@ -26,24 +28,22 @@ function buscaProduto($codigo) {
     return $dados;
 }
 
-function cadastraProduto($nome, $descricao, $valor) {
+function cadastraProduto($nome, $categoria_id, $descricao, $valor) {
     $conexao = conecta_bd();
-    $query = "INSERT INTO produto (nome, descricao, valor) VALUES ('$nome', '$descricao', '$valor')";
+    $query = "INSERT INTO produto (nome, categoria_id, descricao, valor) 
+              VALUES ('$nome', '$categoria_id', '$descricao', '$valor')";
 
     $resultado = mysqli_query($conexao, $query);
 
     if ($resultado) {
-        // Retorna o ID do produto recém-inserido
-        $codigo = mysqli_insert_id($conexao);
+        $codigo = mysqli_insert_id($conexao); // ID do produto recém-inserido
     } else {
-        // Em caso de falha na inserção, retorna 0 ou um valor indicativo de falha
-        $codigo = 0;
+        $codigo = 0; // Em caso de falha
     }
 
     mysqli_close($conexao);
     return $codigo;
 }
-
 
 function removeProduto($codigo) {
     $conexao = conecta_bd();
@@ -76,19 +76,25 @@ function contarProdutos() {
     return $dados['quantidade'];
 }
 
-function editarProduto($codigo, $nome, $descricao, $valor) {
+function editarProduto($codigo, $nome, $descricao, $valor, $categoria_id) {
     $conexao = conecta_bd();
-    $query = "UPDATE produto SET 
-                nome='$nome', 
-                descricao='$descricao', 
-                valor='$valor'
-              WHERE cod='$codigo'";
+    
+    // Verifica se a categoria existe
+    $sql_verifica_categoria = "SELECT COUNT(*) AS count FROM categoria WHERE cod = $categoria_id";
+    $resultado = mysqli_query($conexao, $sql_verifica_categoria);
+    $row = mysqli_fetch_assoc($resultado);
 
-    $resultado = mysqli_query($conexao, $query);
+    if ($row['count'] == 0) {
+        return 0; // Categoria não encontrada
+    }
 
-    mysqli_close($conexao);
-
-    return ($resultado) ? 1 : 0;
+    // Atualiza o produto
+    $sql = "UPDATE produto SET nome = '$nome', descricao = '$descricao', valor = $valor, categoria_id = $categoria_id WHERE cod = $codigo";
+    
+    if (mysqli_query($conexao, $sql)) {
+        return 1;
+    } else {
+        return 0;
+    }
 }
-
 ?>

@@ -62,6 +62,17 @@
             </a>
         </li>
 
+        <!-- Divider -->
+        <hr class="sidebar-divider my-0">
+
+        <!-- Nav Item - Categorias -->
+        <li class="nav-item active">
+            <a class="nav-link" href="categoria.php">
+            <i class="fa fa-list-alt" aria-hidden="true"></i>
+                <span>Categorias</span>
+            </a>
+        </li>
+
         <?php
     } elseif ($_SESSION['perfil'] == 2) {
         // Perfil 2: Funcionario
@@ -74,6 +85,14 @@
             <a class="nav-link" href="produto.php">
                 <i class="fas fa-boxes"></i>
                 <span>Produtos</span>
+            </a>
+        </li>
+
+        <!-- Nav Item - Categorias -->
+        <li class="nav-item active">
+            <a class="nav-link" href="categoria.php">
+            <i class="fa fa-list-alt" aria-hidden="true"></i>
+                <span>Categorias</span>
             </a>
         </li>
         <?php

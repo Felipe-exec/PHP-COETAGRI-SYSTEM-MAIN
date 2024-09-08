@@ -7,9 +7,10 @@ $codigo = $_POST["cod"];
 $nome = $_POST["nome"];
 $descricao = $_POST["descricao"];
 $valor = $_POST["valor"];
+$categoria_id = $_POST["categoria"];
 
 // Atualiza o produto
-$resultado = editarProduto($codigo, $nome, $descricao, $valor);
+$resultado = editarProduto($codigo, $nome, $descricao, $valor, $categoria_id);
 
 if ($resultado == 1) {
     // Verifica se a pasta 'uploads' existe, se não, cria

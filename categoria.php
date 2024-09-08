@@ -24,12 +24,12 @@ unset($_SESSION['senha']);
 
                 <div class="row">
                     <div class="col-md-8">
-                        <h6 class="m-0 font-weight-bold text-primary" id="title">GERENCIAR INFORMAÇÕES DOS PRODUTOS</h6>
+                        <h6 class="m-0 font-weight-bold text-primary" id="title">GERENCIAR CATEGORIAS</h6>
                     </div>
                     <div class="col-md-4 card_button_title">
-                        <a title="Adicionar novo produto" href="cad_produto.php">
+                        <a title="Adicionar nova categoria" href="cad_categoria.php">
                             <button type="button" class="btn btn-primary btn-sm card_button_title" data-toggle="modal">
-                                <i class="fas fa-boxes">&nbsp;</i> Adicionar Produto
+                                <i class="fas fa-tags">&nbsp;</i> Adicionar Categoria
                             </button>
                         </a>
                     </div>
@@ -64,29 +64,21 @@ unset($_SESSION['senha']);
                             <tr>
                                 <th style="display:none;">Código</th>
                                 <th>Nome</th>
-                                <th>Categoria</th>
-                                <th>Descrição</th>
-                                <th>Valor</th>
                                 <th class="text-center" data-orderable="false">Atualizar</th>
                                 <th class="text-center" data-orderable="false">Excluir</th>
                             </tr>
                         </thead>
                         <tbody>
                             <?php 
-                            require_once("bd/bd_produto.php");
-                            $produtos = listaProdutos();
-                            foreach($produtos as $dados): 
+                            require_once("bd/bd_categoria.php");
+                            $categorias = listaCategorias();
+                            foreach($categorias as $dados): 
                             ?>
                                 <tr>
                                     <td style="display:none;"><?= $dados['cod'] ?></td>
                                     <td><?= htmlspecialchars($dados['nome']) ?></td>
-                                    <td class="adjustment-category">
-                                        <span class="badge badge-info"><?= htmlspecialchars($dados['categoria_nome']) ?></span>
-                                    </td>
-                                    <td><?= htmlspecialchars($dados['descricao']) ?></td>
-                                    <td>R$ <?= number_format($dados['valor'], 2, ',', '.') ?></td>
                                     <td class="text-center"> 
-                                        <a title="Atualizar" href="editar_produto.php?cod=<?=$dados['cod']; ?>" class="btn btn-sm btn-success">
+                                        <a title="Atualizar" href="editar_categoria.php?cod=<?=$dados['cod']; ?>" class="btn btn-sm btn-success">
                                             <i class="fas fa-edit">&nbsp;</i>Atualizar
                                         </a>
                                     </td>

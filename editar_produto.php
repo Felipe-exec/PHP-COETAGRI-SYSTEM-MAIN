@@ -3,6 +3,7 @@ require_once('valida_session.php');
 require_once('header.php'); 
 require_once('sidebar.php'); 
 require_once("bd/bd_produto.php");
+require_once("bd/bd_categoria.php");
 
 // Recupera o código do produto a ser editado
 $codigo = $_GET['cod'];
@@ -12,6 +13,7 @@ $dados = buscaProdutoEditar($codigo);
 $nome = $dados["nome"];
 $descricao = $dados["descricao"];
 $valor = $dados["valor"];
+$categoria_id = $dados["categoria_id"]; // ID da categoria atual
 
 // Caminho da imagem baseado no código do produto
 $caminho_imagem_atual = 'uploads/' . $codigo . '_*';
@@ -19,6 +21,9 @@ $imagens = glob($caminho_imagem_atual);
 
 // Verifica se existe ao menos uma imagem e obtém o primeiro arquivo válido
 $imagem_atual = isset($imagens[0]) ? $imagens[0] : null;
+
+// Lista as categorias
+$categorias = listaCategorias();
 ?>
 
 <!-- Main Content -->
@@ -50,6 +55,17 @@ $imagem_atual = isset($imagens[0]) ? $imagens[0] : null;
                 <div class="form-group">
                     <label> Descrição </label>
                     <textarea class="form-control form-control-user" id="descricao" name="descricao" placeholder="Descrição do Produto"><?= $descricao ?></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label> Categoria </label>
+                    <select class="form-control" id="categoria" name="categoria" required>
+                        <?php foreach ($categorias as $categoria): ?>
+                            <option value="<?= $categoria['cod'] ?>" <?= ($categoria['cod'] == $categoria_id) ? 'selected' : '' ?>>
+                                <?= $categoria['nome'] ?>
+                            </option>
+                        <?php endforeach; ?>
+                    </select>
                 </div>
 
                 <?php if ($imagem_atual): ?>

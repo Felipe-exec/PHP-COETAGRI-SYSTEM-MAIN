@@ -18,13 +18,16 @@
 
 }
 
-
 .table td, .table th {
     padding-right: 0;
 }
 .table td {
     padding: .25rem;
     font-size: 14px;
+}
+
+.table-responsive .table td {
+    vertical-align: middle;
 }
 
 .table_resultfim td, th{
