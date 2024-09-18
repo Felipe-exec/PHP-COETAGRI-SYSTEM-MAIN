@@ -5,20 +5,9 @@
 }
 
 body {
-	background: #27AE60;
-	/*font-family: 'Montserrat', sans-serif; */
+	background: rgb(0,0,0);
+	background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(17,36,25,1) 49%, rgba(26,103,59,1) 100%);
 }
-
-/*
-a {
-	color: #333;
-	font-size: 14px;
-	text-decoration: none;
-	margin: 15px 0;
-}
-*/
-
-
 
 @keyframes show {
 	0%, 49.99% {
@@ -33,9 +22,8 @@ a {
 }
 
 footer {
-	background: #27AE60;
-	background: -webkit-linear-gradient(to right, #27AE60, #4e73df);
-	background: linear-gradient(to right, #27AE60, #4e73df);
+	background: rgb(26,103,59);
+	background: linear-gradient(90deg, rgba(26,103,59,1) 0%, rgba(17,36,25,1) 50%, rgba(0,0,0,1) 100%);
 	color: whitesmoke;
     font-size: 14px;
     bottom: 0;
@@ -75,4 +63,28 @@ footer a {
 
 #accordionSidebar.toggled .sidebar-brand img {
     display: block;
+}
+
+
+/* Estilo padrão para ícones */
+.nav-link i {
+    font-size: 1.5rem; /* Tamanho inicial dos ícones */
+}
+
+/* Quando o sidebar estiver colapsado */
+.sidebar.collapsed .nav-link span {
+    display: none; /* Oculta o texto */
+}
+
+.sidebar.collapsed .nav-link i {
+    font-size: 2rem; /* Aumenta o tamanho dos ícones */
+}
+
+/* Estilo para o sidebar */
+.sidebar {
+    transition: width 0.3s;
+}
+
+.sidebar.collapsed {
+    width: 80px; /* Ajuste o valor conforme necessário */
 }

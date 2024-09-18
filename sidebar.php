@@ -10,7 +10,7 @@
 
     <!-- Sidebar - Brand -->
     <a class="sidebar-brand d-flex align-items-center justify-content-center" href="home.php">
-        <div class="sidebar-brand-text mx-3"><img class="img-dashbord" src="./images/coetagri-simbolo.png"> System</div>
+        <div class="mx-3"> <img class="img-dashbord" src="./images/coetagri-simbolo.png"></img> <span> System</span> </div>
     </a>
 
     <!-- Divider -->
@@ -107,11 +107,48 @@
 
     <!-- Sidebar Toggler (Sidebar) -->
     <div class="text-center d-none d-md-inline">
-        <button class="rounded-circle border-0" id="sidebarToggle"></button>
+        <button class="rounded-circle border-0" id="sidebarToggle">
+            <i class=""></i>
+        </button>
     </div>
+
 
 </ul>
 <!-- End of Sidebar -->
 
 <!-- Content Wrapper -->
 <div id="content-wrapper" class="d-flex flex-column">
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    var sidebar = document.querySelector('#accordionSidebar');
+    var toggleButton = document.querySelector('#sidebarToggle');
+    
+    toggleButton.addEventListener('click', function () {
+        var spans = sidebar.querySelectorAll('span'); // Seleciona todos os spans
+        var icons = sidebar.querySelectorAll('i'); // Seleciona todos os ícones
+
+        if (sidebar.classList.contains('minimized')) {
+            // Se não estiver minimizado, restaura os spans e ajusta o tamanho dos ícones
+            spans.forEach(function(span) {
+                span.style.display = 'inline'; // Reexibe os spans
+            });
+            icons.forEach(function(icon) {
+                icon.style.fontSize = '1rem'; // Tamanho padrão dos ícones
+            });
+            sidebar.classList.remove('minimized'); // Remove a classe 'minimized'
+        } else {
+            // Se estiver minimizado, oculta os spans e aumenta o tamanho dos ícones
+            spans.forEach(function(span) {
+                span.style.display = 'none'; // Oculta os spans
+            });
+            icons.forEach(function(icon) {
+                icon.style.fontSize = '1rem'; // Aumenta o tamanho dos ícones
+            });
+            sidebar.classList.add('minimized'); // Adiciona a classe 'minimized'
+        }
+    });
+});
+</script>
+

@@ -5,7 +5,7 @@
 }
 
 body {
-	background: #00aa69;
+	background: #1a673b;
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -159,10 +159,9 @@ input {
 }
 
 .overlay {
-	background: #FF6F61;
-	background: -webkit-linear-gradient(to right, #FF6F61, #ff5d44);
-	background: linear-gradient(to right, #FF6F61, #ff5d44);
-	
+	background: black;
+	background: -webkit-linear-gradient(to right, black, #ff5d44);
+	background: linear-gradient(to right, black, #ff5d44);
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: 0 0;
@@ -224,29 +223,4 @@ input {
 	margin: 0 5px;
 	height: 40px;
 	width: 40px;
-}
-
-footer {
-    background-color: #222;
-    color: #fff;
-    font-size: 14px;
-    bottom: 0;
-    position: fixed;
-    left: 0;
-    right: 0;
-    text-align: center;
-    z-index: 999;
-}
-
-footer p {
-    margin: 10px 0;
-}
-
-footer i {
-    color: red;
-}
-
-footer a {
-    color: #3c97bf;
-    text-decoration: none;
 }
