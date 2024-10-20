@@ -1,0 +1,43 @@
+/* Ajusta o tamanho do campo de pesquisa */
+.input-group input.form-control {
+    max-width: 300px;
+}
+
+/* Aumenta a caixa de produtos */
+#product-list-container {
+    max-height: 500px;
+    overflow-y: auto;
+}
+
+/* Ajusta o estilo da lista de produtos */
+#product-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+#product-list li {
+    padding: 8px 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+#product-list li:last-child {
+    border-bottom: none;
+}
+
+#employee-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+#employee-list li {
+    padding: 8px 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.space-between-cards {
+    padding: 70px; /* Ajuste esse valor conforme necessário */
+}
+/*
+#card-funcionario {
+    max-height: 30%;
+}
