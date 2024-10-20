@@ -5,7 +5,6 @@ require_once('../estrutura/sidebar.php');
 unset ($_SESSION['nome']);
 unset ($_SESSION['email']);
 unset ($_SESSION['senha']);
-unset ($_SESSION['telefone']);
 ?>
 
 <!-- Main Content -->
@@ -65,7 +64,6 @@ unset ($_SESSION['telefone']);
                             <tr>
                                 <th style="display:none";>cod</th>
                                 <th>Nome</th>
-                                <th>Telefone</th>
                                 <th>Perfil</th>
                                 <th class="text-center">Situação</th>
                                 <th class="text-center" data-orderable="false">Atualizar</th>
@@ -81,7 +79,6 @@ unset ($_SESSION['telefone']);
                                 <tr>
                                     <td style="display:none";><?= $dados['cod'] ?></td>
                                     <td><?= $dados['nome'] ?></td>
-                                    <td><?= $dados['telefone'] ?></td>
                                     <td>Funcionario</td>
                                     <td class="text-center"><?= ($dados['status'] == 1 ? '<span class="badge badge-info">Ativo</span>' : '<span class="badge badge-warning">Inativo</span>') ?></td>
                                     <td class="text-center"> 

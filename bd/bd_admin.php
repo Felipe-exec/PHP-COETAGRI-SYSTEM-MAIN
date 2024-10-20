@@ -48,10 +48,10 @@ function buscaAdmin($email) {
 }
 
 
-function cadastraAdmin($nome, $email, $senha, $cep, $endereco, $numero, $bairro, $cidade, $uf, $status, $perfil, $data){
+function cadastraAdmin($nome, $email, $senha, $status, $perfil){
     $conexao = conecta_bd();
-    $query = "insert into admin (nome, email, senha, cep, endereco, numero, bairro, cidade, uf, status, perfil, data) 
-              values ('$nome', '$email', '$senha', '$cep', '$endereco', '$numero', '$bairro', '$cidade', '$uf', '$status', '$perfil', '$data')";
+    $query = "insert into admin (nome, email, senha, status, perfil) 
+              values ('$nome', '$email', '$senha', '$status', '$perfil')";
 
     $resultado = mysqli_query($conexao, $query);
     $dados = mysqli_affected_rows($conexao);
@@ -84,24 +84,24 @@ function buscaAdminEditar($codigo){
     return $dados;
 }
 
-function editarAdmin($codigo, $status, $data){
+function editarAdmin($codigo, $nome, $email, $status){
     $conexao = conecta_bd();
-    $query = "select *
-              from admin
-              where cod='$codigo'";
+    $query = "SELECT * FROM admin WHERE cod='$codigo'";
 
     $resultado = mysqli_query($conexao, $query);
     $dados = mysqli_num_rows($resultado);
-    if($dados == 1){
-        $query = "update admin
-                  set status = '$status', data = '$data'
-                  where cod = '$codigo'";
+    if ($dados == 1) {
+        $query = "UPDATE admin
+                  SET nome = '$nome', email = '$email', status = '$status'
+                  WHERE cod = '$codigo'";
         $resultado = mysqli_query($conexao, $query);
         $dados = mysqli_affected_rows($conexao);
 
         mysqli_close($conexao);
         return $dados;
     }
+    mysqli_close($conexao);
+    return 0;
 }
 
 function editarSenhaAdmin($codigo, $senha) {
@@ -113,7 +113,7 @@ function editarSenhaAdmin($codigo, $senha) {
     return $dados;
 }
 
-function editarPerfilAdmin($codigo, $nome, $email, $endereco, $numero, $bairro, $cidade, $telefone, $data){
+function editarPerfilAdmin($codigo, $nome, $email){
     $conexao = conecta_bd();
 
     $query = "select *
@@ -124,7 +124,7 @@ function editarPerfilAdmin($codigo, $nome, $email, $endereco, $numero, $bairro, 
     $dados = mysqli_num_rows($resultado);
     if($dados == 1) {
         $query = "update admin
-                  set nome = '$nome', email = '$email', endereco = '$endereco', numero = '$numero', bairro = '$bairro', cidade = '$cidade', data = '$data'
+                  set nome = '$nome', email = '$email'
                   where cod = '$codigo'";
         $resultado = mysqli_query($conexao, $query);
         $dados = mysqli_affected_rows($conexao);

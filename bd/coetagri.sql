@@ -28,17 +28,9 @@ CREATE TABLE IF NOT EXISTS `funcionario` (
   `cod` int NOT NULL AUTO_INCREMENT,
   `nome` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `telefone` varchar(100) NOT NULL,
   `senha` varchar(100) NOT NULL,
-  `cep` varchar(9) NOT NULL,
-  `endereco` varchar(100) NOT NULL,
-  `numero` varchar(100) NOT NULL,
-  `bairro` varchar(100) NOT NULL,
-  `cidade` varchar(100) NOT NULL,
-  `uf` varchar(2) NOT NULL,
   `status` int NOT NULL,
   `perfil` int NOT NULL,
-  `data` date NOT NULL,
   PRIMARY KEY (`cod`)
 );
 
@@ -48,15 +40,8 @@ CREATE TABLE IF NOT EXISTS `admin` (
   `nome` varchar(100) NOT NULL,
   `senha` varchar(100) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `cep` varchar(9) NOT NULL,
-  `endereco` varchar(100) NOT NULL,
-  `numero` varchar(100) NOT NULL,
-  `bairro` varchar(100) NOT NULL,
-  `cidade` varchar(100) NOT NULL,
-  `uf` varchar(2) NOT NULL,
   `perfil` int NOT NULL,
   `status` int NOT NULL,
-  `data` date NOT NULL,
   PRIMARY KEY (`cod`)
 );
 
@@ -73,12 +58,12 @@ VALUES
 ('Farinha de Amêndoas', 2, 'Farinha de amêndoas sem glúten, ideal para receitas de panificação e dieta paleo.', 34.90);
 
 -- Insere os administradores
-INSERT INTO `admin` (`cod`, `nome`, `senha`, `email`, `cep`, `endereco`, `numero`, `bairro`, `cidade`, `uf`, `perfil`, `status`, `data`)
+INSERT INTO `admin` (`cod`, `nome`, `senha`, `email`, `perfil`, `status`)
 VALUES
-(25, 'Keniara Vilas Boas', 'e10adc3949ba59abbe56e057f20f883e', 'keniara.vilasboas@ifsuldeminas.edu.br', '37750000', 'Avenida Dolores Silva', '335', 'Centro', 'Machado', 'MG', 1, 1, '2022-07-15');
+(25, 'Keniara Vilas Boas', 'e10adc3949ba59abbe56e057f20f883e', 'keniara.vilasboas@ifsuldeminas.edu.br', 1, 1);
 
 -- Insere os funcionarios
-INSERT INTO `funcionario` (`cod`, `nome`, `email`, `telefone`, `senha`, `cep`, `endereco`, `numero`, `bairro`, `cidade`, `uf`, `status`, `perfil`, `data`)
+INSERT INTO `funcionario` (`cod`, `nome`, `email`, `senha`, `status`, `perfil`)
 VALUES
-(7, 'Dalyla Alvarenga', 'dalylalvarenga@gmail.com', '(35) 99984-9594', 'e10adc3949ba59abbe56e057f20f883e', '37950000', 'Avenida Dolores Silva', '335', 'Centro', 'Aguanil', 'MG', 1, 2, '2022-07-15'),
-(8, 'Maria Aparecida', 'maria@gmail.com', '(35) 99984-9594', 'e10adc3949ba59abbe56e057f20f883e', '37950000', 'Avenida Dolores Silva', '335', 'Centro', 'Aguanil', 'MG', 1, 2, '2022-07-14');
+(7, 'Dalyla Alvarenga', 'dalylalvarenga@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', , 1, 2),
+(8, 'Maria Aparecida', 'maria@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 1, 2);

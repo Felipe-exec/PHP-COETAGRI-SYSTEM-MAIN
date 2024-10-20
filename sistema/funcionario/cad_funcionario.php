@@ -1,5 +1,4 @@
 <?php
-include_once('../../apis/viacep/viacep.php');
 require_once('../acesso/valida_session.php');
 require_once('../estrutura/header.php');
 require_once('../estrutura/sidebar.php');
@@ -77,66 +76,13 @@ require_once('../estrutura/sidebar.php');
                     </div>
 
                     <div class="form-group row">
-                        <div class="col-sm-6 mb-3 mb-sm-0">
-                            <label> CEP </label>
-                            <input type="text" class="form-control form-control-user" id="cep" name="cep" value="<?php if (!empty($_SESSION['cep'])) {
-                                                                                                                        echo $_SESSION['cep'];
-                                                                                                                    } ?>" required>
-                        </div>
-                        <div class="col-sm-6 mb-3 mb-sm-0">
-                            <label> Endereço </label>
-                            <input type="text" class="form-control form-control-user" id="endereco" name="endereco" value="<?php if (!empty($_SESSION['endereco'])) {
-                                                                                                                                echo $_SESSION['endereco'];
-                                                                                                                            } ?>" required>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-sm-6 mb-3 mb-sm-0">
-                            <label> Número </label>
-                            <input type="number" class="form-control form-control-user" id="numero" name="numero" value="<?php if (!empty($_SESSION['numero'])) {
-                                                                                                                                echo $_SESSION['numero'];
-                                                                                                                            } ?>" required>
-                        </div>
-                        <div class="col-sm-6">
-                            <label> Bairro </label>
-                            <input type="text" class="form-control form-control-user" id="bairro" name="bairro" value="<?php if (!empty($_SESSION['bairro'])) {
-                                                                                                                            echo $_SESSION['bairro'];
-                                                                                                                        } ?>" required>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-sm-6 mb-3 mb-sm-0">
-                            <label> Cidade </label>
-                            <input type="text" class="form-control form-control-user" id="cidade" name="cidade" value="<?php if (!empty($_SESSION['cidade'])) {
-                                                                                                                            echo $_SESSION['cidade'];
-                                                                                                                        } ?>" required>
-                        </div>
-                        <div class="col-sm-6">
-                            <label> UF </label>
-                            <input type="text" class="form-control form-control-user" id="uf" name="uf" value="<?php if (!empty($_SESSION['uf'])) {
-                                                                                                                    echo $_SESSION['uf'];
-                                                                                                                } ?>" required>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <div class="col-sm-6 mb-3 mb-sm-0">
-                            <label> Telefone - Ex.: (11) 91234-1234 </label>
-                            <input type="tel" class="form-control form-control-user" id="telefone" name="telefone" placeholder="(xx)xxxxx-xxxx" value="<?php if (!empty($_SESSION['telefone'])) {
-                                                                                                                                                            echo $_SESSION['telefone'];
-                                                                                                                                                        } ?>" maxlength="15" required>
-                        </div>
                         <div class="col-sm-6">
                             <label> Situação </label>
                             <select class="form-control" id="status" name="status" required>
-                                <option value=""> </option>
                                 <option value="1">Ativo</option>
                                 <option value="2">Inativo</option>
                             </select>
                         </div>
-
                     </div>
 
                     <div class="card-footer text-muted" id="btn-form">
@@ -157,4 +103,3 @@ require_once('../estrutura/sidebar.php');
 <?php
 require_once('../estrutura/footer.php');
 ?>
-<script src='../../apis/viacep/viacep.js'></script>

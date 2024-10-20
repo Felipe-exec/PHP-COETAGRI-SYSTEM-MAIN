@@ -40,11 +40,11 @@ function buscaFuncionario($email) {
     return $dados;
 }
 
-function cadastraFuncionario($nome, $email, $senha, $cep, $endereco, $numero, $bairro, $cidade, $uf, $telefone, $status, $perfil, $data){
+function cadastraFuncionario($nome, $email, $senha, $status, $perfil){
     $conexao = conecta_bd();
 
-    $query = "insert into funcionario (nome, email, senha, cep, endereco, numero, bairro, cidade, uf, telefone, status, perfil, data) 
-              values ('$nome', '$email', '$senha', '$cep', '$endereco', '$numero', '$bairro', '$cidade', '$uf', '$telefone', '$status', '$perfil', '$data')";
+    $query = "insert into funcionario (nome, email, senha, status, perfil) 
+              values ('$nome', '$email', '$senha', '$status', '$perfil')";
 
     $resultado = mysqli_query($conexao, $query);
     $dados = mysqli_affected_rows($conexao);
@@ -83,22 +83,24 @@ function contarFuncionarios() {
     return $dados['quantidade'];
 }
 
-function editarFuncionario($codigo, $status, $data){
+function editarFuncionario($codigo, $nome, $email, $status) {
     $conexao = conecta_bd();
-    $query = "select *
-              from funcionario
-              where cod='$codigo'";
+    $query = "SELECT * FROM funcionario WHERE cod='$codigo'";
 
     $resultado = mysqli_query($conexao, $query);
     $dados = mysqli_num_rows($resultado);
-    if($dados == 1){
-        $query = "update funcionario
-                  set status = '$status', data = '$data'
-                  where cod = '$codigo'";
+    if ($dados == 1) {
+        $query = "UPDATE funcionario
+                  SET nome = '$nome', email = '$email', status = '$status'
+                  WHERE cod = '$codigo'";
         $resultado = mysqli_query($conexao, $query);
         $dados = mysqli_affected_rows($conexao);
+
+        mysqli_close($conexao);
         return $dados;
     }
+    mysqli_close($conexao);
+    return 0;
 }
 
 function editarSenhaFuncionario($codigo, $senha) {
@@ -108,7 +110,7 @@ function editarSenhaFuncionario($codigo, $senha) {
     return mysqli_affected_rows($conexao) > 0;
 }
 
-function editarPerfilFuncionario($codigo, $nome, $email, $endereco, $numero, $bairro, $cidade, $telefone, $data){
+function editarPerfilFuncionario($codigo, $nome, $email){
     $conexao = conecta_bd();
 
     $query = "select *
@@ -120,7 +122,7 @@ function editarPerfilFuncionario($codigo, $nome, $email, $endereco, $numero, $ba
     if($dados == 1)
     {
         $query = "update funcionario
-                  set nome = '$nome', email = '$email', endereco = '$endereco', numero = '$numero', bairro = '$bairro', cidade = '$cidade', telefone = '$telefone', data = '$data'
+                  set nome = '$nome', email = '$email'
                   where cod = '$codigo'";
         $resultado = mysqli_query($conexao, $query);
         $dados = mysqli_affected_rows($conexao);

@@ -28,9 +28,8 @@
            </div>
            <div class="modal-body">Deseja realmente sair do sistema?</div>
            <div class="modal-footer">
-               <a href="logout.php"><button class="btn btn-primary btn-user" type="button">Confirmar</button></a>
-               <a href="home.php"><button class="btn btn-danger btn-user" type="button">Cancelar</button></a>
-
+               <a href="/PHP-COETAGRI-SYSTEM-MAIN/sistema/acesso/logout.php"><button class="btn btn-primary btn-user" type="button">Confirmar</button></a>
+               <a href="/PHP-COETAGRI-SYSTEM-MAIN/sistema/estrutura/home.php"><button class="btn btn-danger btn-user" type="button">Cancelar</button></a>
            </div>
        </div>
     </div>

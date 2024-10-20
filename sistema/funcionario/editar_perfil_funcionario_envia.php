@@ -10,9 +10,8 @@ $numero = $_POST["numero"];
 $bairro = $_POST["bairro"];
 $cidade = $_POST["cidade"];
 $telefone = $_POST["telefone"];
-$data=date("y/m/d");
 
-$dados = editarPerfilFuncionario($codigo,$nome,$email,$endereco,$numero,$bairro,$cidade,$telefone,$data);
+$dados = editarPerfilFuncionario($codigo,$nome,$email);
 if ($dados == 1){
     $_SESSION['nome_usu'] = $nome;
     $_SESSION['texto_sucesso'] = 'Os dados do funcionario foram alterados no sistema.';

@@ -33,11 +33,11 @@ $status = $dados["status"];
                     <div class="form-group row">
                         <div class="col-sm-6 mb-3 mb-sm-0">
                             <label> Nome Completo </label>
-                            <input type="text" class="form-control form-control-user" id="nome" name="nome" value="<?= $nome ?>" readonly>
+                            <input type="text" class="form-control form-control-user" id="nome" name="nome" value="<?= $nome ?>">
                         </div>
                         <div class="col-sm-6">
                             <label> Email </label>
-                            <input type="email" class="form-control form-control-user" id="email" name="email" value="<?= $email ?>" readonly>
+                            <input type="email" class="form-control form-control-user" id="email" name="email" value="<?= $email ?>">
                         </div>
                     </div>
 
