@@ -6,68 +6,86 @@ function listaCategorias() {
     $conexao = conecta_bd();
     $categorias = array();
     $query = "SELECT * FROM categoria ORDER BY nome";
-   
-    $resultado = mysqli_query($conexao, $query);
-    while ($dados = mysqli_fetch_array($resultado)) {
-        array_push($categorias, $dados);
+    $stmt = $conexao->prepare($query);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    while ($dados = $resultado->fetch_assoc()) {
+        $categorias[] = $dados;
     }
 
-    mysqli_close($conexao);
+    $stmt->close();
+    $conexao->close();
     return $categorias;
 }
 
 function buscaCategoria($cod) {
     $conexao = conecta_bd();
-    $query = "SELECT * FROM categoria WHERE cod='$cod'";
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_fetch_array($resultado);
+    $query = "SELECT * FROM categoria WHERE cod = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("i", $cod);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $dados = $resultado->fetch_assoc();
 
-    mysqli_close($conexao);
+    $stmt->close();
+    $conexao->close();
     return $dados;
 }
 
 function buscaCategoriaPorNome($nome) {
     $conexao = conecta_bd();
-    $nome = mysqli_real_escape_string($conexao, $nome);
-    $query = "SELECT * FROM categoria WHERE nome='$nome'";
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_fetch_array($resultado);
+    $query = "SELECT * FROM categoria WHERE nome = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("s", $nome);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $dados = $resultado->fetch_assoc();
 
-    mysqli_close($conexao);
+    $stmt->close();
+    $conexao->close();
     return $dados;
 }
 
 function cadastraCategoria($nome) {
     $conexao = conecta_bd();
-    $query = "INSERT INTO categoria (nome) VALUES ('$nome')";
+    $query = "INSERT INTO categoria (nome) VALUES (?)";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("s", $nome);
+    $stmt->execute();
 
-    $resultado = mysqli_query($conexao, $query);
+    $cod = ($stmt->affected_rows > 0) ? $stmt->insert_id : 0;
 
-    $cod = ($resultado) ? mysqli_insert_id($conexao) : 0;
-
-    mysqli_close($conexao);
+    $stmt->close();
+    $conexao->close();
     return $cod;
 }
 
 function editarCategoria($cod, $nome) {
     $conexao = conecta_bd();
-    $query = "UPDATE categoria SET nome='$nome' WHERE cod='$cod'";
+    $query = "UPDATE categoria SET nome = ? WHERE cod = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("si", $nome, $cod);
+    $stmt->execute();
 
-    $resultado = mysqli_query($conexao, $query);
+    $dados = $stmt->affected_rows > 0;
 
-    mysqli_close($conexao);
-
-    return ($resultado) ? 1 : 0;
+    $stmt->close();
+    $conexao->close();
+    return $dados ? 1 : 0;
 }
 
 function removeCategoria($cod) {
     $conexao = conecta_bd();
-    $query = "DELETE FROM categoria WHERE cod='$cod'";
+    $query = "DELETE FROM categoria WHERE cod = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("i", $cod);
+    $stmt->execute();
 
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_affected_rows($conexao);
+    $dados = $stmt->affected_rows;
 
-    mysqli_close($conexao);
+    $stmt->close();
+    $conexao->close();
     return $dados;
 }
 

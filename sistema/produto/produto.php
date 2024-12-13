@@ -90,7 +90,7 @@ unset($_SESSION['senha']);
                                         </a>
                                     </td>
                                     <td class="text-center">
-                                        <a title="Excluir" href="javascript:void(0)" data-toggle="modal" data-target="#excluir-<?=$dados['cod'];?>" class="btn btn-sm btn-danger">
+                                        <a title="Excluir" href="remove_produto.php" data-toggle="modal" data-target="#excluir-<?=$dados['cod'];?>" class="btn btn-sm btn-danger">
                                             <i class="fas fa-trash-alt">&nbsp;</i>Excluir
                                         </a>
                                     </td> 
@@ -105,7 +105,7 @@ unset($_SESSION['senha']);
                                             </div>
                                             <div class="modal-body">Deseja realmente excluir esta categoria?</div>
                                             <div class="modal-footer">
-                                                <a href="remove_categoria.php?cod=<?=$dados['cod'];?>">
+                                                <a href="remove_produto.php?cod=<?=$dados['cod'];?>">
                                                     <button class="btn btn-primary btn-user" type="button">Confirmar</button>
                                                 </a>
                                                 <button class="btn btn-danger btn-user" type="button" data-dismiss="modal">Cancelar</button>

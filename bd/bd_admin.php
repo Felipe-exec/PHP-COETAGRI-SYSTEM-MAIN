@@ -5,132 +5,127 @@ require_once("conecta_bd.php");
 function checaAdmin($email, $senha) {
     $conexao = conecta_bd();
     $senhaMd5 = md5($senha);
-    $query = "select *
-              from admin
-              where email='$email' and
-                    senha='$senhaMd5'";
+    $query = "SELECT * FROM admin WHERE email = ? AND senha = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("ss", $email, $senhaMd5);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $dados = $resultado->fetch_assoc();
 
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_fetch_array($resultado);
-
-    mysqli_close($conexao);
+    $stmt->close();
+    $conexao->close();
     return $dados;
 }
 
-function listaAdmin(){
+function listaAdmin() {
     $conexao = conecta_bd();
     $admins = array();
-    $query = "select *
-              from admin
-              order by nome";
-   
-    $resultado = mysqli_query($conexao, $query);
-    while($dados = mysqli_fetch_array($resultado)) {
-        array_push($admins, $dados);
+    $query = "SELECT * FROM admin ORDER BY nome";
+    $stmt = $conexao->prepare($query);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    while ($dados = $resultado->fetch_assoc()) {
+        $admins[] = $dados;
     }
 
-    mysqli_close($conexao);
+    $stmt->close();
+    $conexao->close();
     return $admins;
 }
 
 function buscaAdmin($email) {
     $conexao = conecta_bd();
-    $query = "SELECT * FROM admin WHERE email='$email'";
-    $resultado = mysqli_query($conexao, $query);
-    
-    if (mysqli_num_rows($resultado) > 0) {
-        return $resultado;
-    } else {
-        return false;
-    }
-    
-    mysqli_close($conexao);
+    $query = "SELECT * FROM admin WHERE email = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    $dados = $resultado->num_rows > 0;
+
+    $stmt->close();
+    $conexao->close();
+    return $dados ? $resultado : false;
 }
 
-
-function cadastraAdmin($nome, $email, $senha, $status, $perfil){
+function cadastraAdmin($nome, $email, $senha, $status, $perfil) {
     $conexao = conecta_bd();
-    $query = "insert into admin (nome, email, senha, status, perfil) 
-              values ('$nome', '$email', '$senha', '$status', '$perfil')";
+    $query = "INSERT INTO admin (nome, email, senha, status, perfil) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("ssssi", $nome, $email, $senha, $status, $perfil);
+    $stmt->execute();
+    $dados = $stmt->affected_rows;
 
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_affected_rows($conexao);
-
-    mysqli_close($conexao);
+    $stmt->close();
+    $conexao->close();
     return $dados;
 }
 
-function removeAdmin($codigo){
+function removeAdmin($codigo) {
     $conexao = conecta_bd();
-    $query = "delete from admin where cod = '$codigo'";
+    $query = "DELETE FROM admin WHERE cod = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("i", $codigo);
+    $stmt->execute();
+    $dados = $stmt->affected_rows;
 
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_affected_rows($conexao);
-
-    mysqli_close($conexao);
+    $stmt->close();
+    $conexao->close();
     return $dados;
 }
 
-function buscaAdminEditar($codigo){
+function buscaAdminEditar($codigo) {
     $conexao = conecta_bd();
-    $query = "select *
-              from admin
-              where cod='$codigo'";
+    $query = "SELECT * FROM admin WHERE cod = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("i", $codigo);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $dados = $resultado->fetch_assoc();
 
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_fetch_array($resultado);
-
-    mysqli_close($conexao);
+    $stmt->close();
+    $conexao->close();
     return $dados;
 }
 
-function editarAdmin($codigo, $nome, $email, $status){
+function editarAdmin($codigo, $nome, $email, $status) {
     $conexao = conecta_bd();
-    $query = "SELECT * FROM admin WHERE cod='$codigo'";
+    $query = "UPDATE admin SET nome = ?, email = ?, status = ? WHERE cod = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("sssi", $nome, $email, $status, $codigo);
+    $stmt->execute();
+    $dados = $stmt->affected_rows;
 
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_num_rows($resultado);
-    if ($dados == 1) {
-        $query = "UPDATE admin
-                  SET nome = '$nome', email = '$email', status = '$status'
-                  WHERE cod = '$codigo'";
-        $resultado = mysqli_query($conexao, $query);
-        $dados = mysqli_affected_rows($conexao);
-
-        mysqli_close($conexao);
-        return $dados;
-    }
-    mysqli_close($conexao);
-    return 0;
+    $stmt->close();
+    $conexao->close();
+    return $dados > 0 ? 1 : 0;
 }
 
 function editarSenhaAdmin($codigo, $senha) {
     $conexao = conecta_bd();
-    $query = "update admin set senha='$senha' where cod='$codigo'";
-    mysqli_query($conexao, $query);
-    $dados = mysqli_affected_rows($conexao) > 0;
-    mysqli_close($conexao);
+    $query = "UPDATE admin SET senha = ? WHERE cod = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("si", $senha, $codigo);
+    $stmt->execute();
+    $dados = $stmt->affected_rows;
+
+    $stmt->close();
+    $conexao->close();
+    return $dados > 0;
+}
+
+function editarPerfilAdmin($codigo, $nome, $email) {
+    $conexao = conecta_bd();
+    $query = "UPDATE admin SET nome = ?, email = ? WHERE cod = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("ssi", $nome, $email, $codigo);
+    $stmt->execute();
+    $dados = $stmt->affected_rows;
+
+    $stmt->close();
+    $conexao->close();
     return $dados;
 }
 
-function editarPerfilAdmin($codigo, $nome, $email){
-    $conexao = conecta_bd();
-
-    $query = "select *
-              from admin
-              where cod = '$codigo'";
-                     
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_num_rows($resultado);
-    if($dados == 1) {
-        $query = "update admin
-                  set nome = '$nome', email = '$email'
-                  where cod = '$codigo'";
-        $resultado = mysqli_query($conexao, $query);
-        $dados = mysqli_affected_rows($conexao);
-
-        mysqli_close($conexao);
-        return $dados;      
-    }
-}
 ?>

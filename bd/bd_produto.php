@@ -8,93 +8,113 @@ function listaProdutos() {
     $query = "SELECT p.*, c.nome AS categoria_nome FROM produto p 
               LEFT JOIN categoria c ON p.categoria_id = c.cod 
               ORDER BY p.nome";
-   
-    $resultado = mysqli_query($conexao, $query);
-    while ($dados = mysqli_fetch_array($resultado)) {
-        array_push($produtos, $dados);
+    $stmt = $conexao->prepare($query);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+
+    while ($dados = $resultado->fetch_assoc()) {
+        $produtos[] = $dados;
     }
 
-    mysqli_close($conexao);
+    $stmt->close();
+    $conexao->close();
     return $produtos;
 }
 
 function buscaProduto($codigo) {
     $conexao = conecta_bd();
-    $query = "SELECT * FROM produto WHERE cod='$codigo'";
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_fetch_array($resultado);
+    $query = "SELECT * FROM produto WHERE cod = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("i", $codigo);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $dados = $resultado->fetch_assoc();
 
-    mysqli_close($conexao);
+    $stmt->close();
+    $conexao->close();
     return $dados;
 }
 
 function cadastraProduto($nome, $categoria_id, $descricao, $valor) {
     $conexao = conecta_bd();
-    $query = "INSERT INTO produto (nome, categoria_id, descricao, valor) 
-              VALUES ('$nome', '$categoria_id', '$descricao', '$valor')";
+    $query = "INSERT INTO produto (nome, categoria_id, descricao, valor) VALUES (?, ?, ?, ?)";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("sisd", $nome, $categoria_id, $descricao, $valor);
+    $stmt->execute();
 
-    $resultado = mysqli_query($conexao, $query);
+    $codigo = $stmt->insert_id ? $stmt->insert_id : 0;
 
-    if ($resultado) {
-        $codigo = mysqli_insert_id($conexao); // ID do produto recém-inserido
-    } else {
-        $codigo = 0; // Em caso de falha
-    }
-
-    mysqli_close($conexao);
+    $stmt->close();
+    $conexao->close();
     return $codigo;
 }
 
 function removeProduto($codigo) {
     $conexao = conecta_bd();
-    $query = "DELETE FROM produto WHERE cod='$codigo'";
+    $query = "DELETE FROM produto WHERE cod = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("i", $codigo);
+    $stmt->execute();
+    $dados = $stmt->affected_rows;
 
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_affected_rows($conexao);
-
-    mysqli_close($conexao);
+    $stmt->close();
+    $conexao->close();
     return $dados;
 }
 
 function buscaProdutoEditar($codigo) {
     $conexao = conecta_bd();
-    $query = "SELECT * FROM produto WHERE cod='$codigo'";
-    
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_fetch_array($resultado, MYSQLI_ASSOC);
+    $query = "SELECT * FROM produto WHERE cod = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("i", $codigo);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $dados = $resultado->fetch_assoc();
 
-    mysqli_close($conexao);
+    $stmt->close();
+    $conexao->close();
     return $dados;
 }
 
 function contarProdutos() {
     $conexao = conecta_bd();
     $query = "SELECT COUNT(*) AS quantidade FROM produto";
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_fetch_assoc($resultado);
-    mysqli_close($conexao);
+    $stmt = $conexao->prepare($query);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $dados = $resultado->fetch_assoc();
+
+    $stmt->close();
+    $conexao->close();
     return $dados['quantidade'];
 }
 
 function editarProduto($codigo, $nome, $descricao, $valor, $categoria_id) {
     $conexao = conecta_bd();
-    
-    // Verifica se a categoria existe
-    $sql_verifica_categoria = "SELECT COUNT(*) AS count FROM categoria WHERE cod = $categoria_id";
-    $resultado = mysqli_query($conexao, $sql_verifica_categoria);
-    $row = mysqli_fetch_assoc($resultado);
+
+    $query_verifica_categoria = "SELECT COUNT(*) AS count FROM categoria WHERE cod = ?";
+    $stmt_categoria = $conexao->prepare($query_verifica_categoria);
+    $stmt_categoria->bind_param("i", $categoria_id);
+    $stmt_categoria->execute();
+    $resultado_categoria = $stmt_categoria->get_result();
+    $row = $resultado_categoria->fetch_assoc();
 
     if ($row['count'] == 0) {
-        return 0; // Categoria não encontrada
-    }
-
-    // Atualiza o produto
-    $sql = "UPDATE produto SET nome = '$nome', descricao = '$descricao', valor = $valor, categoria_id = $categoria_id WHERE cod = $codigo";
-    
-    if (mysqli_query($conexao, $sql)) {
-        return 1;
-    } else {
+        $stmt_categoria->close();
+        $conexao->close();
         return 0;
     }
+    $stmt_categoria->close();
+
+    $query = "UPDATE produto SET nome = ?, descricao = ?, valor = ?, categoria_id = ? WHERE cod = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("ssdii", $nome, $descricao, $valor, $categoria_id, $codigo);
+    $stmt->execute();
+    $dados = $stmt->affected_rows;
+
+    $stmt->close();
+    $conexao->close();
+    return $dados > 0 ? 1 : 0;
 }
+
 ?>

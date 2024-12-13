@@ -65,5 +65,5 @@ VALUES
 -- Insere os funcionarios
 INSERT INTO `funcionario` (`cod`, `nome`, `email`, `senha`, `status`, `perfil`)
 VALUES
-(7, 'Dalyla Alvarenga', 'dalylalvarenga@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', , 1, 2),
+(7, 'Dalyla Alvarenga', 'dalylalvarenga@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 1, 2),
 (8, 'Maria Aparecida', 'maria@gmail.com', 'e10adc3949ba59abbe56e057f20f883e', 1, 2);

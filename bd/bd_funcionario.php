@@ -5,128 +5,139 @@ require_once("conecta_bd.php");
 function checaFuncionario($email, $senha) {
     $conexao = conecta_bd();
     $senhaMd5 = md5($senha);
-    $query = "select *
-              from funcionario
-              where email='$email' and
-                    senha='$senhaMd5'";
+    $query = "SELECT * FROM funcionario WHERE email = ? AND senha = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("ss", $email, $senhaMd5);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $dados = $resultado->fetch_assoc();
 
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_fetch_array($resultado);
-
+    $stmt->close();
+    $conexao->close();
     return $dados;
 }
 
 function listaFuncionarios(){
     $conexao = conecta_bd();
     $funcionarios = array();
-    $query = "select *
-              from funcionario
-              order by nome";
+    $query = "SELECT * FROM funcionario ORDER BY nome";
+    $stmt = $conexao->prepare($query);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
 
-    $resultado = mysqli_query($conexao, $query);
-    while ($dados = mysqli_fetch_array($resultado)){
-        array_push($funcionarios, $dados);
+    while ($dados = $resultado->fetch_assoc()) {
+        $funcionarios[] = $dados;
     }
+
+    $stmt->close();
+    $conexao->close();
     return $funcionarios;
 }
 
 function buscaFuncionario($email) {
     $conexao = conecta_bd();
-    $query = "select * from funcionario where email='$email'";
-    //return mysqli_query($conexao, $query);
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_num_rows($resultado);
+    $query = "SELECT * FROM funcionario WHERE email = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $dados = $resultado->num_rows;
 
+    $stmt->close();
+    $conexao->close();
     return $dados;
 }
 
 function cadastraFuncionario($nome, $email, $senha, $status, $perfil){
     $conexao = conecta_bd();
+    $query = "INSERT INTO funcionario (nome, email, senha, status, perfil) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("ssssi", $nome, $email, $senha, $status, $perfil);
+    $stmt->execute();
+    $dados = $stmt->affected_rows;
 
-    $query = "insert into funcionario (nome, email, senha, status, perfil) 
-              values ('$nome', '$email', '$senha', '$status', '$perfil')";
-
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_affected_rows($conexao);
-
+    $stmt->close();
+    $conexao->close();
     return $dados;
 }
 
 function removeFuncionario($codigo){
     $conexao = conecta_bd();
-    $query = "delete from funcionario where cod = '$codigo'";
+    $query = "DELETE FROM funcionario WHERE cod = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("i", $codigo);
+    $stmt->execute();
+    $dados = $stmt->affected_rows;
 
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_affected_rows($conexao);
-
+    $stmt->close();
+    $conexao->close();
     return $dados;
 }
 
 function buscaFuncionarioEditar($codigo){
     $conexao = conecta_bd();
-    $query = "select *
-              from funcionario
-              where cod='$codigo'";
+    $query = "SELECT * FROM funcionario WHERE cod = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("i", $codigo);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $dados = $resultado->fetch_assoc();
 
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_fetch_array($resultado);
-
+    $stmt->close();
+    $conexao->close();
     return $dados;
 }
 
 function contarFuncionarios() {
     $conexao = conecta_bd();
     $query = "SELECT COUNT(*) AS quantidade FROM funcionario";
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_fetch_assoc($resultado);
-    mysqli_close($conexao);
+    $stmt = $conexao->prepare($query);
+    $stmt->execute();
+    $resultado = $stmt->get_result();
+    $dados = $resultado->fetch_assoc();
+
+    $stmt->close();
+    $conexao->close();
     return $dados['quantidade'];
 }
 
 function editarFuncionario($codigo, $nome, $email, $status) {
     $conexao = conecta_bd();
-    $query = "SELECT * FROM funcionario WHERE cod='$codigo'";
+    $query = "UPDATE funcionario SET nome = ?, email = ?, status = ? WHERE cod = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("sssi", $nome, $email, $status, $codigo);
+    $stmt->execute();
+    $dados = $stmt->affected_rows;
 
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_num_rows($resultado);
-    if ($dados == 1) {
-        $query = "UPDATE funcionario
-                  SET nome = '$nome', email = '$email', status = '$status'
-                  WHERE cod = '$codigo'";
-        $resultado = mysqli_query($conexao, $query);
-        $dados = mysqli_affected_rows($conexao);
-
-        mysqli_close($conexao);
-        return $dados;
-    }
-    mysqli_close($conexao);
-    return 0;
+    $stmt->close();
+    $conexao->close();
+    return $dados > 0 ? 1 : 0;
 }
 
 function editarSenhaFuncionario($codigo, $senha) {
     $conexao = conecta_bd();
-    $query = "update funcionario set senha='$senha' where cod='$codigo'";
-    mysqli_query($conexao, $query);
-    return mysqli_affected_rows($conexao) > 0;
+    $query = "UPDATE funcionario SET senha = ? WHERE cod = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("si", $senha, $codigo);
+    $stmt->execute();
+    $dados = $stmt->affected_rows;
+
+    $stmt->close();
+    $conexao->close();
+    return $dados > 0;
 }
 
 function editarPerfilFuncionario($codigo, $nome, $email){
     $conexao = conecta_bd();
+    $query = "UPDATE funcionario SET nome = ?, email = ? WHERE cod = ?";
+    $stmt = $conexao->prepare($query);
+    $stmt->bind_param("ssi", $nome, $email, $codigo);
+    $stmt->execute();
+    $dados = $stmt->affected_rows;
 
-    $query = "select *
-              from funcionario
-              where cod = '$codigo'";
-                     
-    $resultado = mysqli_query($conexao, $query);
-    $dados = mysqli_num_rows($resultado);
-    if($dados == 1)
-    {
-        $query = "update funcionario
-                  set nome = '$nome', email = '$email'
-                  where cod = '$codigo'";
-        $resultado = mysqli_query($conexao, $query);
-        $dados = mysqli_affected_rows($conexao);
-        return $dados;      
-    }
+    $stmt->close();
+    $conexao->close();
+    return $dados;
 }
+
 ?>

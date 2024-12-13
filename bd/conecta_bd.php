@@ -1,5 +1,4 @@
 <?php
-
     function conecta_bd(){
         $servidor = "localhost";
         $usuario_bd = "root";

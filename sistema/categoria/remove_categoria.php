@@ -12,6 +12,6 @@ if ($resultado == 1) {
     $_SESSION['texto_erro'] = 'A categoria não foi removida.';
 }
 
-header("Location: categoria.php");
+header("Location: produto.php");
 exit();
 ?>
