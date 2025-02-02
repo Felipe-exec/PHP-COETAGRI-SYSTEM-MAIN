@@ -193,9 +193,13 @@ $produtos = listaProdutos();
 
     <div class="container">
       <div class="copyright">
-        &copy; Copyright <strong><span>Dewi</span></strong>. All Rights Reserved
+        &copy; Copyright <strong><span>COETAGRI</span></strong>. Todos os direitos reservados.
       </div>
       <div class="credits">
+        <!-- All the links in the footer should remain intact. -->
+        <!-- You can delete the links only if you purchased the pro version. -->
+        <!-- Licensing information: https://bootstrapmade.com/license/ -->
+        <!-- Purchase the pro version with working PHP/AJAX contact form: https://bootstrapmade.com/dewi-free-multi-purpose-html-template/ -->
         Designed by <a href="https://bootstrapmade.com/">BootstrapMade</a>
       </div>
     </div>
@@ -216,27 +220,30 @@ $produtos = listaProdutos();
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
   <script>
-    const filters = document.querySelectorAll('#portfolio-flters li');
-    const portfolioItems = document.querySelectorAll('.portfolio-item');
+    document.addEventListener("DOMContentLoaded", function() {
+      const filters = document.querySelectorAll("#portfolio-flters li");
+      const items = document.querySelectorAll(".portfolio-container .col-lg-4");
 
-    filters.forEach(filter => {
-      filter.addEventListener('click', function () {
-        const filterValue = this.getAttribute('data-filter');
+      filters.forEach((filter) => {
+        filter.addEventListener("click", function() {
+          // Remove a classe 'filter-active' de todos os botões
+          filters.forEach((el) => el.classList.remove("filter-active"));
+          this.classList.add("filter-active");
 
-        filters.forEach(filter => filter.classList.remove('filter-active'));
+          const filterValue = this.getAttribute("data-filter");
 
-        this.classList.add('filter-active');
-
-        portfolioItems.forEach(item => {
-          if (filterValue === '*' || item.classList.contains(filterValue.replace('.', ''))) {
-            item.style.display = 'block';
-          } else {
-            item.style.display = 'none';
-          }
+          items.forEach((item) => {
+            if (filterValue === "*" || item.classList.contains(filterValue.substring(1))) {
+              item.style.display = "block";
+            } else {
+              item.style.display = "none";
+            }
+          });
         });
       });
     });
   </script>
+
   <!-- Cart Popup -->
   <div id="cart-popup">
     <h4>Itens no Carrinho</h4>

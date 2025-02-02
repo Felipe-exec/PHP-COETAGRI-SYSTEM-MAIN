@@ -497,7 +497,7 @@
               <div class="testimonial-item">
                 <img src="assets/img/Coetagri simbolo.png" class="testimonial-img" alt="">
                 <h3>Gostou do que viu?</h3>
-                <h4><a target="blank" href="inner-page.php">Acesse nossa loja!</a></h4>
+                <h2><a target="blank" href="inner-page.php">Acesse nossa loja!</a></h2>
                 <p>Na loja você poderá adicionar ao carrinho quantos produtos desejar, e na hora da efetuação da compra, você
                   será direcionado para nosso whatsapp para conversar detalhes do pedido e entrega!</p>
                 <p>
